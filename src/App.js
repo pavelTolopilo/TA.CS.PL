@@ -6,7 +6,7 @@ function App() {
 
     useEffect(() => {
         if (!products) {
-            fetch('https://fakestoreapi.com/products')
+            fetch('https://fakestoreapi.com/products?limit=5')
                 .then(res => res.json())
                 .then(json => setProducts(json))
         }
