@@ -2,36 +2,68 @@ import './App.css';
 import {useEffect, useState} from "react";
 
 function App() {
-    // eslint-disable-next-line
     const [products, setProducts] = useState(null);
-    const productListUrl = 'https://p3anz0vr3m.execute-api.us-east-1.amazonaws.com/dev';
+    const PRODUCT_LIST_URL = 'https://p3anz0vr3m.execute-api.us-east-1.amazonaws.com/dev';
+    const HTTP_URL = 'http://api.tvmaze.com/search/shows?q=golden%20girls';
 
     useEffect(() => {
         if (!products) {
-            fetch(productListUrl, {
-                'method': 'OPTIONS'
-            })
-                .then(response => {
-                    if (response.ok) {
-                        fetch(productListUrl)
-                            .then(res => res.json())
-                            .then(json => setProducts(json))
-                    }
-                })
+            fetch(PRODUCT_LIST_URL)
+                .then(res => res.json())
+                .then(json => setProducts(json))
         }
     });
 
-    const showProduct = (id) => fetch(`${productListUrl}/products/${id}`, {
-        'method': 'OPTIONS'
-    })
-        .then(res => res.json())
-        .then(json => console.log(json));
+    const showProduct = (id) =>
+        fetch(`${PRODUCT_LIST_URL}/products/${id}`, {
+        })
+            .then(res => res.json())
+            .then(json => console.log(json))
+
+    const customContentType = (url = HTTP_URL, contentType = 'application/json') =>
+        fetch(url, {
+            headers: {
+                'Content-Type': contentType
+            }
+        })
+            .then(res => res.json())
+            .then(json => console.log(json))
 
     return (
         <div className="App">
             <header className="App-header">
                 <h1>TA CS PL</h1>
             </header>
+            <div className="d-grid gap-2 d-md-flex justify-content-md-center">
+                <button
+                    type="button"
+                    className="btn btn-outline-primary"
+                    onClick={() => customContentType(HTTP_URL, 'plain/text')}
+                >
+                    http plain/text
+                </button>
+                <button
+                    type="button"
+                    className="btn btn-outline-secondary"
+                    onClick={() => customContentType(HTTP_URL, 'application/json')}
+                >
+                    http application/json
+                </button>
+                <button
+                    type="button"
+                    className="btn btn-outline-success"
+                    onClick={() => customContentType(PRODUCT_LIST_URL, 'plain/text')}
+                >
+                    https plain/text
+                </button>
+                <button
+                    type="button"
+                    className="btn btn-outline-danger"
+                    onClick={() => customContentType(PRODUCT_LIST_URL, 'application/json')}
+                >
+                    https application/json
+                </button>
+            </div>
             <div>
                 <table>
                     <thead>
@@ -61,7 +93,3 @@ function App() {
 }
 
 export default App;
-
-// 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'
-
-// 'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'
