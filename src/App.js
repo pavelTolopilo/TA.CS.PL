@@ -38,7 +38,7 @@ function App() {
                 <button
                     type="button"
                     className="btn btn-outline-primary"
-                    onClick={() => customContentType(HTTP_URL, 'plain/text')}
+                    onClick={() => customContentType(HTTP_URL, 'text/plain')}
                 >
                     http plain/text
                 </button>
@@ -52,7 +52,7 @@ function App() {
                 <button
                     type="button"
                     className="btn btn-outline-success"
-                    onClick={() => customContentType(PRODUCT_LIST_URL, 'plain/text')}
+                    onClick={() => customContentType(PRODUCT_LIST_URL, 'text/plain')}
                 >
                     https plain/text
                 </button>
