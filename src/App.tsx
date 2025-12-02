@@ -1,11 +1,12 @@
 import './App.css';
 import { useEffect, useState } from 'react';
-import LoginButton from './components/login.jsx';
-import LogoutButton from './components/logout.jsx';
+import LoginButton from './components/login';
+import LogoutButton from './components/logout';
+import type { Product } from './types';
 
 function App() {
-  const [products, setProducts] = useState(null);
-  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [products, setProducts] = useState<Product[] | null>(null);
+  const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
   const PRODUCT_LIST_URL = 'https://p3anz0vr3m.execute-api.us-east-1.amazonaws.com/dev';
   const HTTP_URL = 'http://api.tvmaze.com/search/shows?q=golden%20girls';
 
@@ -13,16 +14,17 @@ function App() {
     if (!products) {
       fetch(PRODUCT_LIST_URL)
         .then((res) => res.json())
-        .then((json) => setProducts(json));
+        .then((json: Product[]) => setProducts(json));
     }
   });
 
-  const showProduct = (id) =>
+  const showProduct = (id: string): void => {
     fetch(`${PRODUCT_LIST_URL}/products/${id}`, {})
       .then((res) => res.json())
       .then((json) => console.log(json));
+  };
 
-  const customContentType = (url = HTTP_URL, contentType = 'application/json') =>
+  const customContentType = (url: string = HTTP_URL, contentType: string = 'application/json'): void => {
     fetch(url, {
       headers: {
         'Content-Type': contentType,
@@ -30,6 +32,7 @@ function App() {
     })
       .then((res) => res.json())
       .then((json) => console.log(json));
+  };
 
   const renderButtons = () => (
     <div className="d-grid gap-2 d-md-flex justify-content-md-center">

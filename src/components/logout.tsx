@@ -1,7 +1,8 @@
 import { googleLogout } from '@react-oauth/google';
+import type { AuthProps } from '../types';
 
-function Logout({ handleAuthorization }) {
-  const handleLogout = () => {
+function Logout({ handleAuthorization }: AuthProps) {
+  const handleLogout = (): void => {
     googleLogout();
     handleAuthorization(false);
     console.log('Log out successfully!');

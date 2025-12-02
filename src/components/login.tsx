@@ -1,7 +1,8 @@
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
+import type { AuthProps, GoogleCredentialResponse, DecodedToken } from '../types';
 
-function Login({ handleAuthorization }) {
+function Login({ handleAuthorization }: AuthProps) {
   const onSuccess = (credentialResponse) => {
     try {
       const decoded = jwtDecode(credentialResponse.credential);
