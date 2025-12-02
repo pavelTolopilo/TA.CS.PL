@@ -2,9 +2,6 @@ import './App.css';
 import {useEffect, useState} from "react";
 import LoginButton from "./components/login";
 import LogoutButton from "./components/logout";
-import {gapi} from "gapi-script";
-
-const clientId = "584328340810-8p8mqsu24g8oh78ameill3g66ucssbku.apps.googleusercontent.com";
 
 function App() {
     const [products, setProducts] = useState(null);
@@ -19,17 +16,6 @@ function App() {
                 .then(json => setProducts(json))
         }
     });
-
-    useEffect(() => {
-        function start() {
-            gapi.client.init({
-                clientId,
-                scope: "",
-            })
-        }
-
-        gapi.load("client:auth2", start);
-    })
 
     const showProduct = (id) =>
         fetch(`${PRODUCT_LIST_URL}/products/${id}`, {
@@ -101,8 +87,6 @@ function App() {
             )}
             </tbody>
         </table>
-
-    console.log('ACCESS TOKEN: ', gapi.auth.getToken().access_token);
 
     return (
         <div className="App">
