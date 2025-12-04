@@ -2,6 +2,7 @@
   "name": "ta.cs.pl",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@react-oauth/google": "^0.12.2",
     "jwt-decode": "^4.0.0",
@@ -27,29 +28,26 @@
       "last 1 safari version"
     ]
   },
-  "overrides": {
-    "nth-check": "^2.1.1",
-    "postcss": "^8.4.31",
-    "webpack-dev-server": "^5.2.1",
-    "svgo": "^3.0.0"
-  },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
+    "@radix-ui/react-slot": "^1.2.4",
     "@tailwindcss/postcss": "^4.1.17",
-    "@types/node": "^24.10.1",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^4.7.0",
+    "@vitejs/plugin-react": "^5.1.1",
     "autoprefixer": "^10.4.22",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "eslint": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
+    "lucide-react": "^0.555.0",
     "prettier": "^3.7.3",
+    "tailwind-merge": "^3.4.0",
     "tailwindcss": "^4.1.17",
-    "typescript": "^5.9.3",
-    "vite": "^5.4.21"
+    "vite": "^7.2.6"
   }
 }
