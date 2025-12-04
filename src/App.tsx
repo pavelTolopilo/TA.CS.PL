@@ -10,12 +10,21 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from '@/components/ui/dialog';
 
 const LoginButton = lazy(() => import('./components/login'));
 const LogoutButton = lazy(() => import('./components/logout'));
 
 function App() {
   const [products, setProducts] = useState<Product[] | null>(null);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [isAuthorized, setIsAuthorized] = useState<boolean>(false);
   const PRODUCT_LIST_URL = 'https://p3anz0vr3m.execute-api.us-east-1.amazonaws.com/dev';
   const HTTP_URL = 'http://api.tvmaze.com/search/shows?q=golden%20girls';
@@ -31,7 +40,11 @@ function App() {
   const showProduct = useCallback((id: string): void => {
     fetch(`${PRODUCT_LIST_URL}/products/${id}`, {})
       .then((res) => res.json())
-      .then((json) => console.log(json));
+      .then((json: Product) => {
+        setSelectedProduct(json);
+        setIsDialogOpen(true);
+      })
+      .catch((error) => console.error('Error fetching product:', error));
   }, [PRODUCT_LIST_URL]);
 
   const customContentType = useCallback((url: string = HTTP_URL, contentType: string = 'application/json'): void => {
@@ -157,6 +170,43 @@ function App() {
             {renderList()}
           </>
         )}
+
+        {/* Product Detail Dialog */}
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogContent className="max-w-3xl">
+            <DialogHeader>
+              <DialogTitle>{selectedProduct?.title}</DialogTitle>
+              <DialogDescription>Product Details</DialogDescription>
+            </DialogHeader>
+            {selectedProduct && (
+              <div className="grid gap-4">
+                <div className="flex justify-center">
+                  <img
+                    src={selectedProduct.image}
+                    alt={selectedProduct.title}
+                    className="max-w-sm h-auto rounded-lg"
+                  />
+                </div>
+                <div className="grid gap-2">
+                  <div>
+                    <span className="font-semibold">Category:</span> {selectedProduct.category}
+                  </div>
+                  <div>
+                    <span className="font-semibold">Price:</span> ${selectedProduct.price}
+                  </div>
+                  <div>
+                    <span className="font-semibold">Rating:</span> {selectedProduct.rating?.rate} ⭐ 
+                    ({selectedProduct.rating?.count} reviews)
+                  </div>
+                  <div>
+                    <span className="font-semibold">Description:</span>
+                    <p className="mt-1 text-muted-foreground">{selectedProduct.description}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   );

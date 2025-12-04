@@ -5,6 +5,10 @@ export interface Product {
   description: string;
   price?: number;
   image: string;
+  rating?: {
+    rate: number;
+    count: number;
+  };
 }
 
 export interface AuthProps {
