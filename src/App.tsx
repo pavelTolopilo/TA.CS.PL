@@ -1,8 +1,17 @@
-import './App.css';
 import { useEffect, useState } from 'react';
 import LoginButton from './components/login';
 import LogoutButton from './components/logout';
 import type { Product } from './types';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
 
 function App() {
   const [products, setProducts] = useState<Product[] | null>(null);
@@ -35,83 +44,114 @@ function App() {
   };
 
   const renderButtons = () => (
-    <div className="d-grid gap-2 d-md-flex justify-content-md-center">
-      <button
-        type="button"
-        className="btn btn-outline-primary"
+    <div className="flex flex-wrap gap-3 justify-center mb-6">
+      <Button
+        variant="outline"
         onClick={() => customContentType(HTTP_URL, 'text/plain')}
       >
         http text/plain
-      </button>
-      <button
-        type="button"
-        className="btn btn-outline-secondary"
+      </Button>
+      <Button
+        variant="secondary"
         onClick={() => customContentType(HTTP_URL, 'application/json')}
       >
         http application/json
-      </button>
-      <button
-        type="button"
-        className="btn btn-outline-success"
+      </Button>
+      <Button
+        variant="outline"
         onClick={() => customContentType(PRODUCT_LIST_URL, 'text/plain')}
       >
         https text/plain
-      </button>
-      <button
-        type="button"
-        className="btn btn-outline-danger"
+      </Button>
+      <Button
+        variant="destructive"
         onClick={() => customContentType(PRODUCT_LIST_URL, 'application/json')}
       >
         https application/json
-      </button>
+      </Button>
     </div>
   );
 
   const renderList = () => (
-    <table>
-      <thead>
-        <tr>
-          <th>id</th>
-          <th>category</th>
-          <th>title</th>
-          <th>description</th>
-          <th>price</th>
-        </tr>
-      </thead>
-      <tbody>
-        {products?.map((item, index) => (
-          <tr key={index} onClick={() => showProduct(item.id)}>
-            <td>{item.id}</td>
-            <td>{item.category}</td>
-            <td>
-              <img src={item.image} alt={item.image} width="50%" height="50%" />
-            </td>
-            <td>{item.title}</td>
-            <td>{item.description}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+    <Card>
+      <CardHeader>
+        <CardTitle>Products</CardTitle>
+        <CardDescription>Browse available products from the API</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead>ID</TableHead>
+              <TableHead>Category</TableHead>
+              <TableHead>Image</TableHead>
+              <TableHead>Title</TableHead>
+              <TableHead>Description</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {products?.map((item) => (
+              <TableRow
+                key={item.id}
+                onClick={() => showProduct(item.id)}
+                className="cursor-pointer"
+              >
+                <TableCell className="font-medium">{item.id}</TableCell>
+                <TableCell>{item.category}</TableCell>
+                <TableCell>
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-16 h-16 object-cover rounded"
+                  />
+                </TableCell>
+                <TableCell>{item.title}</TableCell>
+                <TableCell className="max-w-xs truncate">{item.description}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </CardContent>
+    </Card>
   );
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <h1>TA CS PL</h1>
+    <div className="min-h-screen bg-background">
+      <header className="bg-card border-b p-6 mb-8">
+        <h1 className="text-4xl font-bold text-center">TA CS PL</h1>
       </header>
-      <div className="container">
-        {!isAuthorized && <LoginButton handleAuthorization={(res) => setIsAuthorized(res)} />}
+      <div className="max-w-7xl mx-auto px-6">
         {!isAuthorized && (
-          <img
-            src="https://assets.digitalocean.com/articles/translateddiagrams32918/Abstract-Protocol-Flow-Russian@2x.png"
-            width="50%"
-            height="50%"
-            alt="oauth2 schema"
-          />
+          <Card className="mb-8">
+            <CardHeader>
+              <CardTitle className="text-3xl">Welcome</CardTitle>
+              <CardDescription>Please authorize to continue</CardDescription>
+            </CardHeader>
+            <CardContent className="flex flex-col items-center gap-6">
+              <LoginButton handleAuthorization={(res) => setIsAuthorized(res)} />
+              <img
+                src="https://assets.digitalocean.com/articles/translateddiagrams32918/Abstract-Protocol-Flow-Russian@2x.png"
+                className="max-w-2xl w-full h-auto rounded-lg shadow-lg"
+                alt="oauth2 schema"
+              />
+            </CardContent>
+          </Card>
         )}
-        {isAuthorized && <LogoutButton handleAuthorization={(res) => setIsAuthorized(res)} />}
-        {isAuthorized && renderButtons()}
-        {isAuthorized && renderList()}
+        {isAuthorized && (
+          <>
+            <Card className="mb-8">
+              <CardHeader>
+                <CardTitle>Authenticated</CardTitle>
+                <CardDescription>You are successfully logged in</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <LogoutButton handleAuthorization={(res) => setIsAuthorized(res)} />
+              </CardContent>
+            </Card>
+            {renderButtons()}
+            {renderList()}
+          </>
+        )}
       </div>
     </div>
   );
