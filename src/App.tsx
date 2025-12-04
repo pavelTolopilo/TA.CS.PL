@@ -1,6 +1,4 @@
-import { useEffect, useState } from 'react';
-import LoginButton from './components/login';
-import LogoutButton from './components/logout';
+import { lazy, Suspense, useEffect, useState } from 'react';
 import type { Product } from './types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -12,6 +10,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+
+const LoginButton = lazy(() => import('./components/login'));
+const LogoutButton = lazy(() => import('./components/logout'));
 
 function App() {
   const [products, setProducts] = useState<Product[] | null>(null);
@@ -128,7 +129,9 @@ function App() {
               <CardDescription>Please authorize to continue</CardDescription>
             </CardHeader>
             <CardContent className="flex flex-col items-center gap-6">
-              <LoginButton handleAuthorization={(res) => setIsAuthorized(res)} />
+              <Suspense fallback={<div className="text-sm text-muted-foreground">Loading...</div>}>
+                <LoginButton handleAuthorization={(res) => setIsAuthorized(res)} />
+              </Suspense>
               <img
                 src="https://assets.digitalocean.com/articles/translateddiagrams32918/Abstract-Protocol-Flow-Russian@2x.png"
                 className="max-w-2xl w-full h-auto rounded-lg shadow-lg"
@@ -145,7 +148,9 @@ function App() {
                 <CardDescription>You are successfully logged in</CardDescription>
               </CardHeader>
               <CardContent>
-                <LogoutButton handleAuthorization={(res) => setIsAuthorized(res)} />
+                <Suspense fallback={<div className="text-sm text-muted-foreground">Loading...</div>}>
+                  <LogoutButton handleAuthorization={(res) => setIsAuthorized(res)} />
+                </Suspense>
               </CardContent>
             </Card>
             {renderButtons()}
