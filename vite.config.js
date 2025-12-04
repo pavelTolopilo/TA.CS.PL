@@ -2,6 +2,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
 import { visualizer } from 'rollup-plugin-visualizer'
+import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -19,6 +20,46 @@ export default defineConfig({
       open: false,
       gzipSize: true,
       brotliSize: true,
+    }),
+    VitePWA({
+      registerType: 'autoUpdate',
+      includeAssets: ['favicon.ico', 'logo192.png', 'logo512.png'],
+      manifest: {
+        name: 'TA CS PL',
+        short_name: 'TA CS PL',
+        description: 'Modern React Application with OAuth',
+        theme_color: '#000000',
+        background_color: '#ffffff',
+        display: 'standalone',
+        icons: [
+          {
+            src: 'logo192.png',
+            sizes: '192x192',
+            type: 'image/png'
+          },
+          {
+            src: 'logo512.png',
+            sizes: '512x512',
+            type: 'image/png'
+          }
+        ]
+      },
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+        runtimeCaching: [
+          {
+            urlPattern: /^https:\/\/p3anz0vr3m\.execute-api\.us-east-1\.amazonaws\.com\/.*/i,
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'api-cache',
+              expiration: {
+                maxEntries: 10,
+                maxAgeSeconds: 60 * 60 * 24 // 24 hours
+              }
+            }
+          }
+        ]
+      }
     })
   ],
   resolve: {

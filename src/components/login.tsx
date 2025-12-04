@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { GoogleLogin } from '@react-oauth/google';
 import { jwtDecode } from 'jwt-decode';
 import type { AuthProps, GoogleCredentialResponse, DecodedToken } from '../types';
@@ -26,4 +27,4 @@ function Login({ handleAuthorization }: AuthProps) {
   );
 }
 
-export default Login;
+export default memo(Login);

@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState } from 'react';
+import { lazy, Suspense, useCallback, useEffect, useState } from 'react';
 import type { Product } from './types';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -28,13 +28,13 @@ function App() {
     }
   });
 
-  const showProduct = (id: string): void => {
+  const showProduct = useCallback((id: string): void => {
     fetch(`${PRODUCT_LIST_URL}/products/${id}`, {})
       .then((res) => res.json())
       .then((json) => console.log(json));
-  };
+  }, [PRODUCT_LIST_URL]);
 
-  const customContentType = (url: string = HTTP_URL, contentType: string = 'application/json'): void => {
+  const customContentType = useCallback((url: string = HTTP_URL, contentType: string = 'application/json'): void => {
     fetch(url, {
       headers: {
         'Content-Type': contentType,
@@ -42,7 +42,7 @@ function App() {
     })
       .then((res) => res.json())
       .then((json) => console.log(json));
-  };
+  }, [HTTP_URL]);
 
   const renderButtons = () => (
     <div className="flex flex-wrap gap-3 justify-center mb-6">

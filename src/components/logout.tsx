@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { googleLogout } from '@react-oauth/google';
 import type { AuthProps } from '../types';
 
@@ -15,4 +16,4 @@ function Logout({ handleAuthorization }: AuthProps) {
   );
 }
 
-export default Logout;
+export default memo(Logout);
